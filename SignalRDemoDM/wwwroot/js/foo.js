@@ -1,6 +1,20 @@
 ﻿"use strict";
 
-var connection = new signalR.HubConnectionBuilder().withUrl("/fooHub").build();
+var connection = new signalR.HubConnectionBuilder()
+    .withUrl("/fooHub")
+    //.configureLogging(signalR.LogLevel.Information)
+    // very useful for seeing connection issues in chrome dev tools
+    .configureLogging(signalR.LogLevel.Trace)
+    .build();
+
+connection.start()
+    .then(function () {
+        //document.getElementById("sendButton").disabled = false;
+        console.log("SignalR Connected - logging from javascript");
+    })
+    .catch(function (err) {
+        return console.error(err.toString());
+    });
 
 // Javascript ReceiveMessage function that is called by the Hub
 connection.on("ReceiveMessageFoo", function (user, message) {
@@ -12,11 +26,6 @@ connection.on("ReceiveMessageFoo", function (user, message) {
     li.textContent = `${user} says ${message}`;
 });
 
-connection.start().then(function () {
-    //document.getElementById("sendButton").disabled = false;
-}).catch(function (err) {
-    return console.error(err.toString());
-});
 
 document.getElementById("sendButton").addEventListener("click", function (event) {
     var user = document.getElementById("userInput").value;

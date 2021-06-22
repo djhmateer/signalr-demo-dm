@@ -1,0 +1,30 @@
+﻿@page
+
+<h1>Streaming From Background Service</h1>
+
+<p>I've got a background service which is doing stuff, and I want to return the messages as it completes things</p>
+<p>Lets imagine it is happening all the time, and I want to display the stream</p>
+<p>The next example will be if I pass it a fileName via a Channel like FileProcessingService in OSR4Rights project</p>
+
+<p>Using Channel Writer and Reader</p>
+<p>https://docs.microsoft.com/en-us/aspnet/core/signalr/streaming?view=aspnetcore-5.0#server-to-client-streaming</p>
+
+<div class="container">
+    <div class="row">
+        <div class="col-6"> <input type="button" id="cancelButton" value="Cancel" /> </div>
+        <input type="hidden" id="crawlButton" value="Crawl" /> 
+    </div>
+
+</div>
+
+<div class="row">
+    <div class="col-6">
+        <ul id="messagesList"></ul>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="~/js/signalr/dist/browser/signalr.js"></script>
+    <script src="~/js/streamingFromBackgroundService.js" asp-append-version="true"></script>
+}

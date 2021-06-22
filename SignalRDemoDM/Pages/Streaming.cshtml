@@ -1,0 +1,24 @@
+﻿@page
+@model StreamingModel
+
+<h1>Streaming Hub</h1>
+
+<div class="container">
+      <div class="row">
+        <div class="col-6"> <input type="button" id="cancelButton" value="Cancel" /> </div>
+          <input type="hidden" id="crawlButton" value="Crawl" /> 
+    </div>
+
+</div>
+
+<div class="row">
+    <div class="col-6">
+        <ul id="messagesList"></ul>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="~/js/signalr/dist/browser/signalr.js"></script>
+    <script src="~/js/streaming.js" asp-append-version="true"></script>
+}
