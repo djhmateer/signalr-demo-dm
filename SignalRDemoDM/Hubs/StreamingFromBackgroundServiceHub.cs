@@ -19,10 +19,10 @@ namespace SignalRDemoDM.Hubs
 
         // Javascript calls this method
         // which returns a ChannelReader<int>
-        public ChannelReader<int> Counter(int count, int delay, CancellationToken cancellationToken)
+        public ChannelReader<string> Counter(int count, int delay, CancellationToken cancellationToken)
         {
             // No limit to the size of this (so no backpressure)
-            var channel = Channel.CreateUnbounded<int>();
+            var channel = Channel.CreateUnbounded<string>();
 
             // We don't want to await WriteItemsAsync, otherwise we'd end up waiting 
             // for all the items to be written before returning the channel back to
@@ -36,21 +36,24 @@ namespace SignalRDemoDM.Hubs
 
         // Write an int to the channel
         // returns a Task only?
-        private async Task WriteItemsAsync(ChannelWriter<int> writer, int count, int delay, CancellationToken cancellationToken)
+        private async Task WriteItemsAsync(ChannelWriter<string> writer, int count, int delay, CancellationToken cancellationToken)
         {
             Exception localException = null;
             try
             {
-                for (var i = 0; i < count; i++)
+                for (var i = 0; i < 50; i++)
                 {
-                    Log.Information($"Inside StreamingChannelHub {i}");
+                    var foo = Context.ConnectionId;
+
+                    var message = $"StreamingChannelHub {i} connectionId {foo}";
+                    Log.Information(message);
 
                     // write result back to channel
-                    await writer.WriteAsync(i, cancellationToken);
+                    await writer.WriteAsync(message, cancellationToken);
 
                     // Use the cancellationToken in other APIs that accept cancellation
                     // tokens so the cancellation can flow down to them.
-                    await Task.Delay(delay, cancellationToken);
+                    await Task.Delay(1000, cancellationToken);
                 }
 
                 throw new ApplicationException("ApplicationException - all stop!");

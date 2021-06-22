@@ -19,6 +19,18 @@ connection.start()
         return console.error(err.toString());
     });
 
+
+// ReceiveMessage that is called by the Hub (BackgroundService now!)
+connection.on("ReceiveMessage", function (user, message) {
+    var li = document.createElement("li");
+    document.getElementById("messagesList").appendChild(li);
+    // We can assign user-supplied strings to an element's textContent because it
+    // is not interpreted as markup. If you're assigning in any other way, you 
+    // should be aware of possible script injection concerns.
+    li.textContent = `${user} says ${message}`;
+});
+
+
 document.getElementById("crawlButton").addEventListener("click", function (event) {
     // need subscription so can dispose (cancel) below
     var subscription = connection.stream("Counter", 5, 500)
